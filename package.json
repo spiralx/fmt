@@ -1,0 +1,29 @@
+{
+  "name": "fmt",
+  "version": "0.0.0",
+  "description": "String formatting and variable substitution function",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "fmt",
+    "format",
+    "string",
+    "printf",
+    "substitute",
+    "template",
+    "console",
+    "print",
+    "puts"
+  ],
+  "author": "James Skinner <spiralx@gmail.com> (http://github.com/spiralx)",
+  "license": "BSD",
+  "devDependencies": {
+    "gulp-bump": "^0.1.7",
+    "gulp-util": "^2.2.14",
+    "gulp-coffee": "^1.4.1",
+    "gulp": "^3.6.0",
+    "gulp-mocha": "^0.4.1"
+  }
+}
