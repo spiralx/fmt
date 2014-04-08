@@ -1,5 +1,4 @@
 node_modules
-scripts
 lib/
 *.tmp
 *.log
