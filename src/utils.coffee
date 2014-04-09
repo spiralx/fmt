@@ -4,8 +4,6 @@
 
 # -----------------------------------------------------------------------------
 
-# getOptions = (val) -> if typeof val is 'String' then val.split(' ') else val
-
 
 passAny = (tests...) ->
   (val) -> tests.some((test) -> test(val))
@@ -27,14 +25,26 @@ class IfThen
     if @test obj then @thenfn obj else @elsefn? obj
 
 
-# class ListMapper
-#   constructor: (@cases...) ->
+# -----------------------------------------------------------------------------
 
-#   test: (val) ->
-#     for test, result in @cases:
-#       if test val
-#         return true
-#     false
+findall = exports.findall = (regex, str) ->
+  regex.lastIndex = 0
+  m while m = regex.exec str
+
+
+partial = (func, a...) ->
+  (b...) -> func a..., b...
+
+
+compose = (func1, func2) ->
+  (args...) -> func1 func2 args...
+
+
+reduce = exports.reduce = (array, combine, base) ->
+  base = base ? array.shift()
+  for element in array
+    base = combine base, element
+  base
 
 
 # -----------------------------------------------------------------------------

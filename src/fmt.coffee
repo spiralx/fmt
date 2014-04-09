@@ -1,12 +1,12 @@
 
-{ classof, isclass } = require 'classof'
-{ htmlEscape, getProperty } = require 'utils'
+{ classOf, isClass } = require './classof'
+{ replaceEach, htmlEscape, getProperty } = require './utils'
 
 
 # -----------------------------------------------------------------------------
 
 getString = (obj) ->
-  objClass = classof(obj)
+  objClass = classOf(obj)
 
   if objClass is 'Undefined' or objClass is 'Null'
     return objClass.toLowerCase()
@@ -77,7 +77,8 @@ fmt = exports.fmt = (format, items...) ->
 
   res = format.replace formatSpecRegex, (match, path, oper) ->
     try
-      path_props = path.replace(arrayIndexRegex, '.$1').split('.')
+      path_props = path.replace arrayIndexRegex, '.$1'
+        .split '.'
       value = path_props.reduce getProperty, data
 
       value = if oper and formatting_operators[oper] then formatting_operators[oper] value else value

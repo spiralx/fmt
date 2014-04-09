@@ -19,6 +19,7 @@ describe 'utils.coffee', ->
         .to.equal 'some-text'
       done()
 
+
   describe 'htmlEscape()', ->
     it 'should escape <, > and & only', (done) ->
       expect utils.htmlEscape 'a <thing> & another <thing>'
@@ -26,6 +27,20 @@ describe 'utils.coffee', ->
       expect utils.htmlEscape 'a "<thing>" & another \'<thing>\''
         .to.equal 'a "&lt;thing&gt;" &amp; another \'&lt;thing&gt;\''
       done()
+
+
+  describe 'reduce()', ->
+    sum = (a, b) -> a + b
+
+    it 'should work with an initial value', (done) ->
+      (expect utils.reduce [1..5], sum, 0).to.equal 15
+      (expect utils.reduce [1..5], sum, 5).to.equal 20
+      done()
+
+    it 'should work without an initial value', (done) ->
+      (expect utils.reduce [1..5], sum).to.equal 15
+      done()
+
 
   describe 'getProperty()', ->
     it 'should get own properties on objects', (done) ->
