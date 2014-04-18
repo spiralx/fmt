@@ -42,8 +42,7 @@ compose = (func1, func2) ->
 
 reduce = exports.reduce = (array, combine, base) ->
   base = base ? array.shift()
-  for element in array
-    base = combine base, element
+  base = combine base, element for element in array
   base
 
 
