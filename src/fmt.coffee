@@ -1,6 +1,7 @@
 
 { classOf, isClass } = require './classof'
 { replaceEach, htmlEscape, getProperty } = require './utils'
+{ ObjectPath } = require './object-path'
 
 
 # -----------------------------------------------------------------------------
@@ -68,20 +69,31 @@ fmt('{a[-5].x}', {a: [{ x: 12, y: 4 }, 7, 120, 777, 999]}) -> '12'
 @return {String}
 ###
 fmt = exports.fmt = (format, items...) ->
-  data = if items.length is 1 then items[0] else items
-
-  #data = (if arguments_.length is 2 and typeof data is "object" and data.constructor isnt Array then data else [].slice.call(arguments_, 1))
-  #console.log('path="%s" (%s), data=%s', path, p.toSource(), data.toSource());
+  # console.info "'#{format}', #{classOf format}, #{items[0]}, #{classOf items[0]}"
+  # console.dir items
+  if (classOf format) isnt 'String'
+    data = [ format ]
+    format = '{0}'
+  else if items.length is 1 and not (isClass items[0], 'String Number Date RegExp Function')
+    data = items[0]
+  else
+    data = items
 
   format = doubleBraceRep format
 
+  # console.log format
+  # console.dir data
+
   res = format.replace formatSpecRegex, (match, path, oper) ->
     try
-      path_props = path.replace arrayIndexRegex, '.$1'
-        .split '.'
-      value = path_props.reduce getProperty, data
+      objpath = new ObjectPath path
+      console.info "path: '#{path}', oper: '#{oper}', objpath: '#{objpath.pathExpr}'"
 
-      value = if oper and formatting_operators[oper] then formatting_operators[oper] value else value
+      value = objpath.resolve data
+
+      if oper and formatting_operators[oper]
+        value = formatting_operators[oper] value
+
       String value
 
     catch ex
