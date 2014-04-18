@@ -16,7 +16,8 @@ config =
 
 # See http://stackoverflow.com/questions/21602332/catching-gulp-mocha-errors
 handleError = (err) ->
-  console.warn err
+  if err.plugin isnt 'gulp-mocha'
+    console.warn err
   this.emit 'end'
 
 
@@ -33,8 +34,6 @@ gulp.task 'coffee', ->
   coff = plugins.coffee { bare: true }
     .on 'error', plugins.util.log
 
-  console.info config.dest.js
-
   gulp.src config.src.coffee
     .pipe plugins.coffee { bare: true }
     .on 'error', plugins.util.log
@@ -49,9 +48,7 @@ gulp.task 'lint', ->
 
 gulp.task 'mocha', ['coffee'], ->
   gulp.src config.test.coffee, { read: false }
-    .pipe plugins.mocha {
-      reporter: 'spec'
-    }
+    .pipe plugins.mocha { reporter: 'spec' }
     .on 'error', handleError
 
 
