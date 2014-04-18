@@ -30,6 +30,9 @@ Check whether the class of obj is one of the supplied names.
 @param {String+} names
 @return {Boolean}
 ###
-isClass = exports.isClass = (obj, names...) -> classOf(obj) in names
+isClass = exports.isClass = (obj, names...) ->
+  if names.length is 1 and typeof names[0] is 'string'
+    names = names[0].split ' '
+  classOf(obj) in names
 
 
