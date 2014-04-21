@@ -152,8 +152,8 @@ describe 'object-path.coffee', ->
         .to.be.ok.and.have.property 'pathExpr', '.'
       expect op.elems
         .to.eql []
-
       done()
+
 
 
     it 'should accept simple names', (done) ->

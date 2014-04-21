@@ -26,10 +26,9 @@ exports.PropertyElement = class PropertyElement extends PathElement
 
 
   resolve: (obj) ->
-    r = obj[@key] if obj? and obj.hasOwnProperty @key
+    obj[@key] if obj? and obj.hasOwnProperty @key
     # console.log "key: #{@key}, r: #{classOf r}, obj: #{classOf obj} obj.has: #{obj.hasOwnProperty @key} obj.keys: #{(Object.keys obj).join(',')}"
     # console.dir r
-    r
 
   pathExpr: -> ".#{@key}"
 
@@ -80,5 +79,5 @@ exports.ObjectPath = class ObjectPath
   resolve: (obj) ->
     #console.dir obj
     #console.log @toString()
-    reduce @elems, ((cur, elem) -> elem.resolve cur), obj
+    reduce @elems, obj, ((cur, elem) -> elem.resolve cur)
 

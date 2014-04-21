@@ -1,6 +1,6 @@
 
 { classOf, isClass } = require './classof'
-{ replaceEach, htmlEscape, getProperty } = require './utils'
+{ replacer, htmlEncode, getProperty } = require './utils'
 { ObjectPath } = require './object-path'
 
 
@@ -36,7 +36,7 @@ formatting_operators =
       depth: 2
       colors: false
 
-  h: htmlEscape
+  h: htmlEncode
 
   t: (s) -> s.trim()
 
@@ -44,8 +44,8 @@ formatting_operators =
 # -----------------------------------------------------------------------------
 
 
-doubleBraceRep = replaceEach [ /\{\{/g, String.fromCharCode(0) ], [ /\}\}/g, String.fromCharCode(1) ]
-doubleBraceRest = replaceEach [ /\x00/g, '{' ], [ /\x01/g, '}' ]
+doubleBraceRep = replacer [ /\{\{/g, String.fromCharCode(0) ], [ /\}\}/g, String.fromCharCode(1) ]
+doubleBraceRest = replacer [ /\x00/g, '{' ], [ /\x01/g, '}' ]
 
 
 formatSpecRegex = /\{([^!}]+)(?:!([a-z]+))?\}/g
@@ -87,9 +87,9 @@ fmt = exports.fmt = (format, items...) ->
   res = format.replace formatSpecRegex, (match, path, oper) ->
     try
       objpath = new ObjectPath path
-      console.info "path: '#{path}', oper: '#{oper}', objpath: '#{objpath.pathExpr}'"
 
-      value = objpath.resolve data
+      value = (objpath.resolve data) ? ''
+      console.info "path: '#{path}', oper: '#{oper}', objpath: '#{objpath.pathExpr}', value: #{value}"
 
       if oper and formatting_operators[oper]
         value = formatting_operators[oper] value
