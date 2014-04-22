@@ -54,6 +54,19 @@ describe 'utils.coffee', ->
 
   # ---------------------------------------------------------------------------
 
+  describe 'dict()', ->
+
+    it 'should return a new object', (done) ->
+      expect utils.dict()
+        .to.be.an 'object'
+        .and.to.eql {}
+      expect utils.dict ['x', 6], ['y', 2], ['name', 'Ray-Ray']
+        .to.eql x: 6, y: 2, name: 'Ray-Ray'
+
+      done()
+
+  # ---------------------------------------------------------------------------
+
   describe 'update()', ->
 
     it 'should combine values properly', (done) ->

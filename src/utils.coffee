@@ -10,7 +10,7 @@ findall = exports.findall = (regex, str) ->
   m while m = regex.exec str
 
 
-partial = (func, a...) ->
+partial = exports.partial = (func, a...) ->
   (b...) -> func a..., b...
 
 
@@ -36,6 +36,20 @@ reduce = exports.reduce = (array, base, combine) ->
 extend = (dest, src) ->
   dest[key] = value for key, value of src
   dest
+
+
+###
+Takes a series of [name, value] arrays and returns a new
+object with those properties.
+
+@param {Array*} items
+@return {Object}
+###
+dict = exports.dict = (items...) ->
+  d = {}
+  for [name, value] in items
+    d[name] = value
+  d
 
 
 ###

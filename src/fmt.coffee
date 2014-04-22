@@ -1,6 +1,6 @@
 
 { classOf, isClass } = require './classof'
-{ replacer, htmlEncode, getProperty } = require './utils'
+{ replacer, htmlEncode, partial } = require './utils'
 { ObjectPath } = require './object-path'
 
 
@@ -27,6 +27,13 @@ getString = (obj) ->
 # -----------------------------------------------------------------------------
 
 
+parseOperators = (s) ->
+  for p in s.trim().split /\s*;\s*/g
+    [m, name, rest] = p.match(/([a-z$_][a-z0-9$_]*)\s*(?::\s*(.*))/i)
+    rest ?= ''
+    params = dict(ps.split '=' for ps in rest.split /\s*,\s*/g)
+
+
 formatting_operators =
   enc: encodeURIComponent
   dec: decodeURIComponent
@@ -48,7 +55,7 @@ doubleBraceRep = replacer [ /\{\{/g, String.fromCharCode(0) ], [ /\}\}/g, String
 doubleBraceRest = replacer [ /\x00/g, '{' ], [ /\x01/g, '}' ]
 
 
-formatSpecRegex = /\{([^!}]+)(?:!([a-z]+))?\}/g
+formatSpecRegex = /\{([^!}]+)(?:!([^}]+))?\}/g
 arrayIndexRegex = /\[(-?\w+)\]/g
 
 
