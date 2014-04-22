@@ -88,13 +88,13 @@ fmt = exports.fmt = (format, items...) ->
     try
       objpath = new ObjectPath path
 
-      value = (objpath.resolve data) ? ''
-      console.info "path: '#{path}', oper: '#{oper}', objpath: '#{objpath.pathExpr}', value: #{value}"
+      value = objpath.resolve data
+      #console.info "path: '#{path}', oper: '#{oper}', objpath: '#{objpath.pathExpr}', value: #{value}"
 
       if oper and formatting_operators[oper]
         value = formatting_operators[oper] value
 
-      String value
+      String (value ? '')
 
     catch ex
       match

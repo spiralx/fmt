@@ -46,10 +46,42 @@ describe 'fmt.coffee', ->
       done()
 
 
+    it 'should allow {{ and }} escapes', (done) ->
+      expect fmt 'x: {{x}}, x: {x}', x: 99
+        .to.equal 'x: {x}, x: 99'
+      expect fmt '{{0}} = {0}', 'foo'
+        .to.equal '{0} = foo'
+
+
+      done()
+
+
     it 'should use toString to format inputs', (done) ->
       expect fmt 'x: {0}, y: {1} = woo {2}', 13, 'foo', {}
         .to.equal 'x: 13, y: foo = woo [object Object]'
       expect fmt '{0}, {1}, {0}', 13, []
         .to.equal '13, , 13'
+
+      done()
+
+
+    it 'should support object paths', (done) ->
+      obj =
+        pos:
+          x: 14
+          y: -2.2
+        name: 'Jill Stern'
+        ids: ['fxu', 'zzy', 'moo']
+
+      expect fmt 'name: "{name}"', obj
+        .to.equal 'name: "Jill Stern"'
+      expect fmt 'position: ({pos})', obj
+        .to.equal 'position: ([object Object])'
+      expect fmt 'position: ({pos.x}, {pos.y})', obj
+        .to.equal 'position: (14, -2.2)'
+      expect fmt 'name: "{name}", first id = {ids[0]}', obj
+        .to.equal 'name: "Jill Stern", first id = fxu'
+      expect fmt 'name: "{name}", last id = {ids[-1]}', obj
+        .to.equal 'name: "Jill Stern", last id = moo'
 
       done()

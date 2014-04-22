@@ -16,7 +16,7 @@ config =
 
 # See http://stackoverflow.com/questions/21602332/catching-gulp-mocha-errors
 handleError = (err) ->
-  if err.plugin isnt 'gulp-mocha'
+  if not (err.plugin is 'gulp-mocha' and err.message.match /\d+ test failed\./)
     console.warn err
   this.emit 'end'
 
